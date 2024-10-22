@@ -25,30 +25,7 @@
         </form>
     </section>
 
+    <!-- Enlazamos el archivo externo formulario.js -->
     <script src="formulario.js"></script>
-    <script>
-        document.getElementById('registro-form').addEventListener('submit', function(e) {
-            const nombre = document.getElementById('nombre').value;
-            const correo = document.getElementById('correo').value;
-            const errorSpanNombre = document.createElement('span');
-            const errorSpanCorreo = document.createElement('span');
-            
-            // Validación del nombre (solo letras y espacios)
-            if (!/^[a-zA-Z\s]+$/.test(nombre)) {
-                e.preventDefault();
-                alert('El nombre solo debe contener letras y espacios.');
-                return;
-            }
-            
-            // Validación del correo electrónico
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-                e.preventDefault();
-                alert('Por favor ingresa un correo válido.');
-                return;
-            }
-            
-            // Si todo es correcto, continúa con el envío
-        });
-    </script>    
 </body>
 </html>
