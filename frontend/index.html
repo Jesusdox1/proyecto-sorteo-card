@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo de Chocolate</title>
+    <link rel="stylesheet" href="style.css"> <!-- Archivo CSS para el diseño -->
+</head>
+<body>
+    
+    <header>
+        <h1>Sorteo</h1>
+        <p>Participa en el sorteo de tarjetas de regalo</p>
+    </header>
+
+    <!--Registro -->
+    <section>
+        <h2>Registro para Participar</h2>
+        <p>Para participar, ingresa tu número de teléfono. Para despues pasar a un pequeño formulario.</p>
+
+        <!-- Formulario de Registro -->
+        <form id="form-registro" action="/submit" method="post">
+            <div>
+                <label for="telefono">Número de Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10}" required placeholder="Ej. 9981567890">
+                <span id="telefono-error" style="color: red;"></span>
+            </div>
+            <div>
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Información del sorteo -->
+    <section>
+        <h2>Detalles del Sorteo</h2>
+        <p>El sorteo se llevará a cabo el <strong>"		"</strong>. Los ganadores serán contactados por teléfono y sus nombres aparecerán en esta página.</p>
+    </section>
+
+    <!-- Sección de Ganadores -->
+    <section id="ganadores">
+        <h2>Ganadores del Sorteo</h2>
+        <ul>
+            <li>Aquí se mostrarán los ganadores después del sorteo.</li>
+        </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer>    
+        <p> 2024 Sorteo Tecnm Cancún.</p>
+    </footer>
+
+    <script src="app.js"></script> <!-- Archivo JavaScript -->
+    <script>
+        document.getElementById('form-registro').addEventListener('submit', function(e) {
+            const telefono = document.getElementById('telefono').value;
+            const errorSpan = document.getElementById('telefono-error');
+            
+            // Validación del número de teléfono
+            if (!telefono.match(/^\d{10}$/)) {
+                e.preventDefault();  // Evita que se envíe el formulario
+                errorSpan.textContent = 'El número de teléfono debe tener 10 dígitos';
+            } else {
+                errorSpan.textContent = '';
+                
+                // Verificación adicional en el frontend (e.g., número que empieza con 5-9)
+                if (!/^[5-9]\d{9}$/.test(telefono)) {
+                    e.preventDefault();
+                    errorSpan.textContent = 'El número debe empezar con un dígito entre 5 y 9.';
+                } else {
+                    errorSpan.textContent = '';
+                }
+            }
+        });
+    </script>    
+</body>
+</html>

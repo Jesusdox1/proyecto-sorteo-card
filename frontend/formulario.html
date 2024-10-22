@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Completa tu Registro</h1>
+        <p>Ingresa tu nombre y correo para completar tu participación.</p>
+    </header>
+
+    <section>
+        <h2>Formulario</h2>
+        <form id="registro-form">
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" id="nombre" name="nombre" pattern="[a-zA-Z\s]+" required placeholder="Ej. Juan Pérez">
+        
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" id="correo" name="correo" required placeholder="Ej. juan.perez@example.com">        
+
+            <button type="submit">Completar Registro</button>
+        </form>
+    </section>
+
+    <script src="formulario.js"></script>
+    <script>
+        document.getElementById('registro-form').addEventListener('submit', function(e) {
+            const nombre = document.getElementById('nombre').value;
+            const correo = document.getElementById('correo').value;
+            const errorSpanNombre = document.createElement('span');
+            const errorSpanCorreo = document.createElement('span');
+            
+            // Validación del nombre (solo letras y espacios)
+            if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+                e.preventDefault();
+                alert('El nombre solo debe contener letras y espacios.');
+                return;
+            }
+            
+            // Validación del correo electrónico
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                e.preventDefault();
+                alert('Por favor ingresa un correo válido.');
+                return;
+            }
+            
+            // Si todo es correcto, continúa con el envío
+        });
+    </script>    
+</body>
+</html>
