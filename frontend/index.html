@@ -47,46 +47,11 @@
 
     <!-- Footer -->
     <footer>    
-        <p> 2024 Sorteo Tecnm Cancún.</p>
+        <p>2024 Sorteo Tecnm Cancún.</p>
     </footer>
 
+    <!-- Enlazamos el archivo externo app.js -->
     <script src="app.js"></script> <!-- Archivo JavaScript -->
-    <script>
-document.getElementById('form-registro').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const telefono = document.getElementById('telefono').value;
-    const errorSpan = document.getElementById('telefono-error');
-
-    try {
-        const response = await fetch('/api/registro', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ telefono }),
-        });
-
-        // Verifica si la respuesta es JSON antes de intentar parsearla
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            const data = await response.json();
-
-            if (response.ok) {
-                alert('Número registrado exitosamente');
-            } else {
-                errorSpan.textContent = data.message || 'Error al registrar el número';
-            }
-        } else {
-            errorSpan.textContent = 'La respuesta no es JSON.';
-        }
-
-    } catch (error) {
-        errorSpan.textContent = 'Error en la solicitud: ' + error.message;
-        console.error('Error en el fetch:', error);
-    }
-});
-    </script>    
 </body>
 </html>
 
