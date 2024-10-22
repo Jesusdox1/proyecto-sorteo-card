@@ -17,13 +17,14 @@ document.getElementById('registro-form').addEventListener('submit', function(e) 
             correo
         };
 
-        fetch('http://localhost:5000/api/completar-registro', {  // Cambiado a Railway
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(datos)
-        })
+    fetch('/api/completar-registro', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+    })
+
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al completar el registro.');
