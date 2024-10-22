@@ -89,14 +89,6 @@ app.get('/api/ganadores', async (req, res) => {
     }
 });
 
-// Servir archivos estáticos desde la carpeta 'frontend'
-app.use(express.static(path.join(__dirname, '../frontend')));
-
-// Ruta para servir el archivo 'index.html' en la raíz
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
-});
-
 // Iniciar servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
