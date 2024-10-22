@@ -10,7 +10,6 @@ document.getElementById('form-registro').addEventListener('submit', function(e) 
         return;
     }
 
-    // Verificación adicional: ¿El número empieza con 5-9?
     if (!/^[5-9]\d{9}$/.test(telefono)) {
         errorSpan.textContent = 'El número debe empezar con un dígito entre 5 y 9.';
         return;
@@ -26,19 +25,25 @@ document.getElementById('form-registro').addEventListener('submit', function(e) 
         },
         body: JSON.stringify({ telefono })
     })
-
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => {
+                throw new Error(err.message || 'Error en la solicitud');
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.message === 'Número de teléfono registrado exitosamente.') {
             alert(data.message);
             window.location.href = `formulario.html?telefono=${telefono}`;
         } else {
-            alert(data.message);  // Aquí se muestra el mensaje de error
+            alert(data.message);
         }
     })
     .catch(error => {
-        console.error('Error:', error);  // Asegúrate de revisar este log
-        alert('Ocurrió un error al registrar el número.');
-    });    
+        console.error('Error en la solicitud:', error);
+        alert('Ocurrió un error: ' + error.message);
+    });
 });
 
