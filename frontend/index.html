@@ -34,7 +34,7 @@
     <!-- Información del sorteo -->
     <section>
         <h2>Detalles del Sorteo</h2>
-        <p>El sorteo se llevará a cabo el <strong>"		"</strong>. Los ganadores serán contactados por teléfono y sus nombres aparecerán en esta página.</p>
+        <p>El sorteo se llevará a cabo el <strong>"   "</strong>. Los ganadores serán contactados por teléfono y sus nombres aparecerán en esta página.</p>
     </section>
 
     <!-- Sección de Ganadores -->
@@ -50,9 +50,11 @@
         <p> 2024 Sorteo Tecnm Cancún.</p>
     </footer>
 
+    <script src="app.js"></script> <!-- Archivo JavaScript -->
     <script>
         document.getElementById('form-registro').addEventListener('submit', async function(e) {
-            e.preventDefault();  // Evita que se envíe el formulario por defecto
+            e.preventDefault(); // Evitar envío de formulario por defecto
+
             const telefono = document.getElementById('telefono').value;
             const errorSpan = document.getElementById('telefono-error');
 
@@ -60,14 +62,17 @@
             if (!telefono.match(/^\d{10}$/)) {
                 errorSpan.textContent = 'El número de teléfono debe tener 10 dígitos';
                 return;
-            } else if (!/^[5-9]\d{9}$/.test(telefono)) {
-                errorSpan.textContent = 'El número debe empezar con un dígito entre 5 y 9.';
-                return;
-            } else {
-                errorSpan.textContent = '';
             }
 
-            // Enviar los datos al backend usando fetch
+            // Verificación adicional en el frontend (número debe empezar con 5-9)
+            if (!/^[5-9]\d{9}$/.test(telefono)) {
+                errorSpan.textContent = 'El número debe empezar con un dígito entre 5 y 9.';
+                return;
+            }
+
+            errorSpan.textContent = ''; // Limpia el mensaje de error si todo es válido
+
+            // Enviar los datos al backend
             try {
                 const response = await fetch('/api/registro', {
                     method: 'POST',
@@ -78,6 +83,7 @@
                 });
 
                 const data = await response.json();
+
                 if (response.ok) {
                     alert('Número registrado exitosamente');
                 } else {
@@ -85,9 +91,10 @@
                 }
             } catch (error) {
                 errorSpan.textContent = 'Error en la solicitud: ' + error.message;
+                console.error('Error en el fetch:', error);
             }
         });
-    </script>
+    </script>    
 </body>
 </html>
 
