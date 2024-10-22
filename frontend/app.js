@@ -19,13 +19,14 @@ document.getElementById('form-registro').addEventListener('submit', function(e) 
     errorSpan.textContent = '';  // Limpiar cualquier mensaje de error
     
     // Enviar los datos al servidor
-    fetch('http://localhost:5000/api/registro', {  // Cambiado a Railway
+    fetch('/api/registro', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ telefono })
     })
+
     .then(response => response.json())
     .then(data => {
         if (data.message === 'Número de teléfono registrado exitosamente.') {
