@@ -29,6 +29,7 @@ const Participante = mongoose.model('Participante', participanteSchema);
 const { check, validationResult } = require('express-validator');
 
 // Ruta para el registro de participante
+// Ruta para el registro de participante
 app.post('/api/registro', async (req, res) => {
     console.log('Datos recibidos en /api/registro:', req.body); // Verifica que los datos lleguen al servidor
 
@@ -46,7 +47,8 @@ app.post('/api/registro', async (req, res) => {
         return res.status(201).json({ message: 'Número de teléfono registrado exitosamente.' });
     } catch (err) {
         console.error('Error al registrar el número:', err);
-        return res.status(500).json({ message: 'Error al registrar el número de teléfono.' });
+        // Asegúrate de devolver siempre una respuesta en formato JSON en caso de error
+        return res.status(500).json({ message: 'Error al registrar el número de teléfono.', error: err.message });
     }
 });
 
