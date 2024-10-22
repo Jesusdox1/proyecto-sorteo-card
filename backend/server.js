@@ -94,6 +94,13 @@ app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
 
+// Manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack); // Muestra el error en la consola del servidor
+  res.status(500).json({ message: 'Ocurrió un error en el servidor' });
+});
+
+
 
 
 
