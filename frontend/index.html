@@ -13,13 +13,13 @@
         <p>Participa en el sorteo de tarjetas de regalo</p>
     </header>
 
-    <!--Registro -->
+    <!-- Registro -->
     <section>
         <h2>Registro para Participar</h2>
-        <p>Para participar, ingresa tu número de teléfono. Para despues pasar a un pequeño formulario.</p>
+        <p>Para participar, ingresa tu número de teléfono. Para después pasar a un pequeño formulario.</p>
 
         <!-- Formulario de Registro -->
-        <form id="form-registro" action="/submit" method="post">
+        <form id="form-registro">
             <div>
                 <label for="telefono">Número de Teléfono:</label>
                 <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10}" required placeholder="Ej. 9981567890">
@@ -50,28 +50,44 @@
         <p> 2024 Sorteo Tecnm Cancún.</p>
     </footer>
 
-    <script src="app.js"></script> <!-- Archivo JavaScript -->
     <script>
-        document.getElementById('form-registro').addEventListener('submit', function(e) {
+        document.getElementById('form-registro').addEventListener('submit', async function(e) {
+            e.preventDefault();  // Evita que se envíe el formulario por defecto
             const telefono = document.getElementById('telefono').value;
             const errorSpan = document.getElementById('telefono-error');
-            
+
             // Validación del número de teléfono
             if (!telefono.match(/^\d{10}$/)) {
-                e.preventDefault();  // Evita que se envíe el formulario
                 errorSpan.textContent = 'El número de teléfono debe tener 10 dígitos';
+                return;
+            } else if (!/^[5-9]\d{9}$/.test(telefono)) {
+                errorSpan.textContent = 'El número debe empezar con un dígito entre 5 y 9.';
+                return;
             } else {
                 errorSpan.textContent = '';
-                
-                // Verificación adicional en el frontend (e.g., número que empieza con 5-9)
-                if (!/^[5-9]\d{9}$/.test(telefono)) {
-                    e.preventDefault();
-                    errorSpan.textContent = 'El número debe empezar con un dígito entre 5 y 9.';
+            }
+
+            // Enviar los datos al backend usando fetch
+            try {
+                const response = await fetch('/api/registro', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ telefono }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Número registrado exitosamente');
                 } else {
-                    errorSpan.textContent = '';
+                    errorSpan.textContent = data.message || 'Error al registrar el número';
                 }
+            } catch (error) {
+                errorSpan.textContent = 'Error en la solicitud: ' + error.message;
             }
         });
-    </script>    
+    </script>
 </body>
 </html>
+
