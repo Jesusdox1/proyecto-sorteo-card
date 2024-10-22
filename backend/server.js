@@ -7,13 +7,11 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Parsear JSON correctamente
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-
 // Conexión a MongoDB Atlas
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Conectado a MongoDB Atlas'))
     .catch(err => console.error('Error al conectar a MongoDB:', err));
 
@@ -30,19 +28,20 @@ const { check, validationResult } = require('express-validator');
 
 // Ruta para el registro de participante
 app.post('/api/registro', async (req, res) => {
-    console.log('Datos recibidos en /api/registro:', req.body); // Verifica que los datos lleguen al servidor
-
-    const { telefono } = req.body;
     try {
+        const { telefono } = req.body;
+
+        if (!telefono || !/^\d{10}$/.test(telefono)) {
+            return res.status(400).json({ message: 'Número de teléfono inválido.' });
+        }
+
         let participante = await Participante.findOne({ telefono });
         if (participante) {
-            console.log('El número ya está registrado:', telefono);
             return res.status(400).json({ message: 'El número ya está registrado.' });
         }
 
         participante = new Participante({ telefono });
         await participante.save();
-        console.log('Número registrado exitosamente:', telefono);
         return res.status(201).json({ message: 'Número de teléfono registrado exitosamente.' });
     } catch (err) {
         console.error('Error al registrar el número:', err);
@@ -85,7 +84,7 @@ app.get('/api/ganadores', async (req, res) => {
         const ganadores = await Participante.find({ nombre: { $exists: true }, correo: { $exists: true } });
         res.status(200).json(ganadores);
     } catch (error) {
-        console.error(error);
+        console.error('Error en la ruta de ganadores:', error);
         res.status(500).json({ message: 'Error en el servidor.' });
     }
 });
@@ -98,10 +97,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// Iniciar servidor en el puerto asignado por Railway
+// Iniciar servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
 
 
 
