@@ -30,15 +30,19 @@ const { check, validationResult } = require('express-validator');
 
 // Ruta para el registro de participante
 app.post('/api/registro', async (req, res) => {
+    console.log('Datos recibidos en /api/registro:', req.body); // Verifica que los datos lleguen al servidor
+
     const { telefono } = req.body;
     try {
         let participante = await Participante.findOne({ telefono });
         if (participante) {
+            console.log('El número ya está registrado:', telefono);
             return res.status(400).json({ message: 'El número ya está registrado.' });
         }
 
         participante = new Participante({ telefono });
         await participante.save();
+        console.log('Número registrado exitosamente:', telefono);
         return res.status(201).json({ message: 'Número de teléfono registrado exitosamente.' });
     } catch (err) {
         console.error('Error al registrar el número:', err);
@@ -68,6 +72,7 @@ app.post('/api/completar-registro', [
         participante.correo = correo;
         await participante.save();
 
+        console.log('Registro completado exitosamente:', { telefono, nombre, correo });
         return res.status(200).json({ message: 'Registro completado exitosamente.', participante });
     } catch (err) {
         console.error('Error al completar el registro:', err);
@@ -98,5 +103,6 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
 
 
