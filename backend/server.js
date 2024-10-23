@@ -31,8 +31,9 @@ app.post('/api/registro', async (req, res) => {
     try {
         const { telefono } = req.body;
 
-        if (!telefono || !/^\d{10}$/.test(telefono)) {
-            return res.status(400).json({ message: 'Número de teléfono inválido.' });
+        // Validaciones del número de teléfono
+        if (!telefono || !/^[5-9]\d{9}$/.test(telefono)) {
+            return res.status(400).json({ message: 'Número de teléfono inválido. Debe tener 10 dígitos y empezar con 5-9.' });
         }
 
         let participante = await Participante.findOne({ telefono });
@@ -96,8 +97,8 @@ app.listen(PORT, () => {
 
 // Manejo de errores
 app.use((err, req, res, next) => {
-  console.error(err.stack); // Muestra el error en la consola del servidor
-  res.status(500).json({ message: 'Ocurrió un error en el servidor' });
+    console.error(err.stack); // Muestra el error en la consola del servidor
+    res.status(500).json({ message: 'Ocurrió un error en el servidor' });
 });
 
 
