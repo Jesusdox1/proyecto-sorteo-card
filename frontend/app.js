@@ -5,13 +5,9 @@ document.getElementById('form-registro').addEventListener('submit', function(e) 
     const telefono = document.getElementById('telefono').value;
     const errorSpan = document.getElementById('telefono-error');
 
-    if (!/^\d{10}$/.test(telefono)) {
-        errorSpan.textContent = 'El número de teléfono debe tener 10 dígitos';
-        return;
-    }
-
+    // Validación del número de teléfono
     if (!/^[5-9]\d{9}$/.test(telefono)) {
-        errorSpan.textContent = 'El número debe empezar con un dígito entre 5 y 9.';
+        errorSpan.textContent = 'El número debe tener 10 dígitos y empezar con un dígito entre 5 y 9.';
         return;
     }
 
